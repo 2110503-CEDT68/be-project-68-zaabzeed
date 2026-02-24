@@ -7,7 +7,7 @@ const helmet = require('helmet')
 const {xss}=require('express-xss-sanitizer');
 const rateLimit=require('express-rate-limit');
 const hpp=require('hpp')
-const cors=require('cors');
+//const cors=require('cors');
 
 //Load env vars
 dotenv.config({path:'./config/config.env'});
@@ -33,7 +33,7 @@ app.use(limiter);
 //Prevent http param pollutions ลบค่าที่ซ้ำของ query parameter เพื่อไม่ให้attacker overrideค่า
 app.use(hpp());
 //Enable CORS เช่น frontend(localhost:3000) เรียกใช้ backend API (localhost:5000) ได้
-app.use(cors());
+//app.use(cors());
 
 //Cookie parser
 app.use (cookieParser());
