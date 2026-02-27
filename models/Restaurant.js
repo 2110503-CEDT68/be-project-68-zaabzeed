@@ -12,7 +12,12 @@ const RestaurantSchema = new mongoose.Schema({
         required: [true, 'Please add an address']
     },
     tel:{
-        type: String
+        type: String,
+        required: [true, 'Please add a telephone number']
+    },
+    openCloseTime: {
+        type: String,
+        required: [true, 'Please add open-close time']
     }
 },{
     timestamps: true,
@@ -21,14 +26,14 @@ const RestaurantSchema = new mongoose.Schema({
 });
 
 //Reverse populate with virtuals
-RestaurantSchema.virtual('appointments',{
-    ref: 'Appointment',
-    localField: '_id',
-    foreignField: 'hospital',
-    justOne: false
+RestaurantSchema.virtual('reservations', {
+  ref: 'Reservation',
+  localField: '_id',
+  foreignField: 'restaurant',
+  justOne: false
 });
 
 
-module.exports=mongoose.model('Hospital',RestaurantSchema);
+module.exports=mongoose.model('Restaurant',RestaurantSchema);
     
     
