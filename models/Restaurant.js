@@ -13,7 +13,7 @@ const RestaurantSchema = new mongoose.Schema({
     },
     tel:{
         type: String,
-        required: [true, 'Please add a telephone number']
+        required: [true, 'Please add a tel number']
     },
     openCloseTime: {
         type: String,
