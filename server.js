@@ -26,8 +26,8 @@ app.use(helmet());
 app.use(xss());
 //Rate Limiting ไม่ให้ส่งrequestเกินค่าmax
     const limiter=rateLimit({
-    windowsMs:10*60*1000, //10 mins
-    max: 3
+    windowMs:10*60*1000, //10 mins
+    max: 100000
 });
 app.use(limiter); 
 //Prevent http param pollutions ลบค่าที่ซ้ำของ query parameter เพื่อไม่ให้attacker overrideค่า
@@ -42,14 +42,14 @@ app.use (cookieParser());
 connectDB();
 
 //Route files
-const hospitals = require('./routes/hospitals');
+const restaurants = require('./routes/restaurants');
 const auth = require('./routes/auth');
-const appointments = require('./routes/appointments');
+const reservations = require('./routes/reservations');
 
 //Mount routers
-app.use('/api/v1/hospitals',hospitals);
+app.use('/api/v1/restaurants',restaurants);
 app.use('/api/v1/auth',auth);
-app.use('/api/v1/appointments', appointments);
+app.use('/api/v1/reservations', reservations);
 
 const PORT = process.env.PORT || 5000;
 const server = app.listen(PORT, console.log('Server running in ', process.env.NODE_ENV, ' mode on port ', PORT));
