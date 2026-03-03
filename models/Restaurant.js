@@ -33,7 +33,6 @@ RestaurantSchema.virtual('reservations', {
   justOne: false
 });
 
-
 module.exports=mongoose.model('Restaurant',RestaurantSchema);
     
     
