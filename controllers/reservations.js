@@ -33,19 +33,19 @@ exports.getReservations = async(req,res,next)=>{
     if(req.user.role !== 'admin'){
         query=Reservation.find({user:req.user.id}).populate({
             path:'restaurant',
-            select: 'name province tel'
+            select: 'name address tel openCloseTime'
         });
     }else{ //If you are an admin, you can see all!
         if (req.params.restaurantId) {
             console.log(req.params.restaurantId);
             query = Reservation.find({restaurant:req.params.restaurantId}).populate({
                 path:"restaurant",
-                select: "name province tel",
+                select: 'name address tel openCloseTime',
             });
         }else
         query=Reservation.find().populate({
             path:'restaurant',
-            select: 'name province tel'
+            select: 'name address tel openCloseTime'
         });
     }
     try {
@@ -69,7 +69,7 @@ exports.getReservation=async(req,res,next)=>{
     try {
         const reservation= await Reservation.findById(req.params.id).populate({
             path: 'restaurant',
-            select: 'name description tel'
+            select: 'name address tel openCloseTime'
         });
 
         if(!reservation){
@@ -108,7 +108,7 @@ exports.addReservation = async (req,res,next)=>{
             });
         }
 
-        // ✅ 1) Validate tables (ต่อการจอง)
+        //1) Validate tables (ต่อการจอง)
         const tables = Number(req.body.tables);
 
         if (!Number.isInteger(tables) || tables < 1 || tables > 3) {
@@ -118,7 +118,7 @@ exports.addReservation = async (req,res,next)=>{
             });
         }
 
-        // ✅ 2) เช็คเวลาเปิด-ปิด
+        //2) เช็คเวลาเปิด-ปิด
         if (!isWithinOpenHours(req.body.reservationDate, restaurant.openCloseTime)) {
             return res.status(400).json({
                 success:false,
@@ -129,8 +129,8 @@ exports.addReservation = async (req,res,next)=>{
         // add user Id to req.body
         req.body.user = req.user.id;
 
-        // ❌ ลบ existedReservations.length >=3 แบบเดิมออก
-        // ✅ 3) รวมจำนวนโต๊ะทั้งหมดของ user
+        //ลบ existedReservations.length >=3 แบบเดิมออก
+        //3) รวมจำนวนโต๊ะทั้งหมดของ user
         const agg = await Reservation.aggregate([
             { $match: { user: req.user._id } },
             { $group: { _id: null, totalTables: { $sum: "$tables" } } }
@@ -145,7 +145,7 @@ exports.addReservation = async (req,res,next)=>{
             });
         }
 
-        // ✅ สร้าง reservation
+        //สร้าง reservation
         const reservation = await Reservation.create({
             user: req.user.id,
             restaurant: req.params.restaurantId,

@@ -12,8 +12,6 @@ const cors=require('cors');
 //Load env vars
 dotenv.config({path:'./config/config.env'});
 
-process.env.TZ = "Asia/Bangkok";
-
 const app=express();
 app.set('query parser', 'extended');
 
